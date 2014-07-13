@@ -1,0 +1,8 @@
+{
+  "source": {
+  	"include":["server/methods","server/publish"],
+    "exclude": ["packages/"],
+    "includePattern": ".+\\.js(doc)?$",
+    "excludePattern": "(^|\\/|\\\\)_"
+  }
+}
