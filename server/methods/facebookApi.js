@@ -20,17 +20,29 @@ Meteor.methods ({
 
     var fut = new Future ();
 
-    FB.api(requestUrl, function(err, data) {
+    FB.api(requestUrl, Meteor.bindEnvironment (
+      function (err, response) {
 
-      if (err) {
-        console.log('/facebook/api' + requestUrl + ' error: ' + JSON.stringify(err));
-      }
-      //console.log('/facebook/api' + requestUrl + ' result: ' + JSON.stringify(data));
+        console.log(requestUrl + ' response: ' + JSON.stringify(response));
 
-      fut.return(data);
-    });
+        fut.return(response);
+
+      }, function (ex) {
+        console.log (requestUrl + ' error: ' + JSON.stringify (ex));
+        throw ex;
+      }) // End bindEnvironment
+    );
 
     return fut.wait();
 
+  },
+  '/facebook/currentUser/api': function (requestUrl) {
+
+    var user = Meteor.users.findOne(this.userId);
+
+    return Meteor.call('/facebook/api',requestUrl,user.services.facebook.accessToken);
+
   }
+
+
 });

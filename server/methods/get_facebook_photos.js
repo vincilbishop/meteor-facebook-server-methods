@@ -30,7 +30,10 @@ Meteor.methods ({
    @memberof Server-Methods
    */
 
-  '/facebook/getProfilePhotos': function () {
+  '/facebook/currentUser/getProfilePhotos': function () {
+
+    //var url = '/me/fql?q=select+pid,src_small+from+photo+where+aid+in(select+aid+from+album+where+owner=me()+and+type="profile")&access_token=' + Meteor.user().services.facebook.accessToken;
+    //return Meteor.call('/facebook/api',url);
 
     //var url = '/' + Meteor.user().services.facebook.id + '/albums';
     // /me/fql?q=select+aid+from+album+where+owner=me()+and+type="profile"&access_token=
@@ -39,10 +42,19 @@ Meteor.methods ({
 
     var fut = new Future ();
 
+    var FB = new Facebook({
+      appId: FacebookServerMethods.appId,
+      secret: FacebookServerMethods.secret
+    });
+
     FB.api (url, Meteor.bindEnvironment (
         function (err, response) {
 
           console.log('facebook api response: ' + JSON.stringify(response));
+
+          if (err){
+            console.log ('facebook api error: ' + JSON.stringify (err));
+          }
 
           fut.return(response);
 
@@ -55,4 +67,5 @@ Meteor.methods ({
     return fut.wait ();
 
   }
+
 });
