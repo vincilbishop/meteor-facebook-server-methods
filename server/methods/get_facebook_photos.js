@@ -32,40 +32,46 @@ Meteor.methods ({
 
   '/facebook/currentUser/getProfilePhotos': function () {
 
-    //var url = '/me/fql?q=select+pid,src_small+from+photo+where+aid+in(select+aid+from+album+where+owner=me()+and+type="profile")&access_token=' + Meteor.user().services.facebook.accessToken;
-    //return Meteor.call('/facebook/api',url);
+    var url = '/me/fql?q=SELECT+src_small+FROM+photo+WHERE+aid+IN+(SELECT+aid+FROM+album+WHERE+owner+=+me()+AND+type+=+"profile")&access_token=' + Meteor.user().services.facebook.accessToken;
 
-    //var url = '/' + Meteor.user().services.facebook.id + '/albums';
-    // /me/fql?q=select+aid+from+album+where+owner=me()+and+type="profile"&access_token=
-    //var url = '/me/fql?q=select+aid+from+album+where+owner=me()+and+type="profile"&access_token=' + Meteor.user().services.facebook.accessToken;
-    var url = '/me/fql?q=select+pid,src_small+from+photo+where+aid+in(select+aid+from+album+where+owner=me()+and+type="profile")&access_token=' + Meteor.user().services.facebook.accessToken;
-
-    var fut = new Future ();
-
-    var FB = new Facebook({
-      appId: FacebookServerMethods.appId,
-      secret: FacebookServerMethods.secret
-    });
-
-    FB.api (url, Meteor.bindEnvironment (
-        function (err, response) {
-
-          console.log('facebook api response: ' + JSON.stringify(response));
-
-          if (err){
-            console.log ('facebook api error: ' + JSON.stringify (err));
-          }
-
-          fut.return(response);
-
-        }, function (ex) {
-          console.log ('facebook api error: ' + JSON.stringify (ex));
-          throw ex;
-        }) // End bindEnvironment
-    );
-
-    return fut.wait ();
-
+    return Meteor.call('/facebook/currentUser/api',url);
   }
+
+  /*
+   '/facebook/currentUser/getProfilePhotos': function () {
+
+   var url = '/me/fql?q=SELECT+src_small+FROM+photo+WHERE+aid+IN+(SELECT+aid+FROM+album+WHERE+owner+=+me()+AND+type+=+"profile")&access_token=' + Meteor.user().services.facebook.accessToken;
+
+   var fut = new Future ();
+
+   var FB = new Facebook({
+   appId: FacebookServerMethods.appId,
+   secret: FacebookServerMethods.secret
+   });
+
+   FB.setAccessToken(Meteor.user().services.facebook.accessToken);
+
+
+   FB.api (url, Meteor.bindEnvironment (
+   function (err, response) {
+
+   console.log(url + ' response: ' + JSON.stringify(response));
+
+   if (err){
+   console.log (url + '  error: ' + JSON.stringify (err));
+   }
+
+   fut.return(response);
+
+   }, function (ex) {
+   console.log ('facebook api error: ' + JSON.stringify (ex));
+   throw ex;
+   }) // End bindEnvironment
+   );
+
+   return fut.wait ();
+
+   }
+  * */
 
 });
