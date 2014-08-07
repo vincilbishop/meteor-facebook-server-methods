@@ -5,9 +5,14 @@
 Meteor.startup (
   /**
    * Authenticates or creates a user with a facebook token
-   *  @method '/login'
-   *  @param {Object} loginRequest An object with two properties, a fbData dictionary and the iOS provided access token.
+   *  @method 'login'
+   *  @param {Object} request An object with a single property, accessToken.
    *  @returns An object containing the Meteor User Id, the SRP (not facebook) token, and when the Meteor SRP token expiry timestamp.
+   *  @discussion It is assumed that the user has granted email permissions to the app. If access to the user's email address has not been granted, a unique albeit non-functioning email address is created to identify the user.
+   *  @example request:
+   *  {
+   *  accessToken: "CAAKdPZBWM9xkBA..."
+   *  }
    *  @example response:
    *  {
    id = XXXdiCsMqyboijdt6;
@@ -19,19 +24,17 @@ Meteor.startup (
    */
   function () {
     Accounts.registerLoginHandler (
-      function (loginRequest) {
+      function (request) {
         //there are multiple login handlers in meteor.
         //a login request go through all these handlers to find it's login hander
         //so in our login handler, we only consider login requests which has admin field
 
-        console.log ('loginRequest: ' + JSON.stringify (loginRequest));
+        console.log ('request.accessToken: ' + JSON.stringify (request.accessToken));
 
-        if (loginRequest.fbData == undefined) {
-          return null;
-        }
+
 
         //our authentication logic :)
-        if (loginRequest.accessToken == undefined) {
+        if (request.accessToken == undefined) {
           return null;
         } else {
           // Verfiy that the token from facebook is valid...
@@ -42,12 +45,11 @@ Meteor.startup (
 
           var appAccessToken = facebook.getApplicationAccessToken ();
 
-          console.log ('appAccessToken ' + appAccessToken);
-
+          console.log ('appAccessToken: ' + appAccessToken);
 
           var fut = new Future ();
 
-          var url = '/debug_token?input_token=' + loginRequest.accessToken + '&access_token=' + appAccessToken;
+          var url = '/debug_token?input_token=' + request.accessToken + '&access_token=' + appAccessToken;
           facebook.api (url, Meteor.bindEnvironment (
               function (err, response) {
                 console.log (JSON.stringify (response));
@@ -65,16 +67,23 @@ Meteor.startup (
                  */
 
                 if (response.data.is_valid === true) {
+                  var fbUserInfo = Meteor.call('/facebook/api','/me?fields=id,name,email', request.accessToken);
+
+                  /*
+                   {"id":"10152261285788107","name":"Vincil Bishop","email":"vincil.bishop@vbishop.com"}
+
+                   * */
+
                   //we create a user if not exists, and get the userId
-                  var email = loginRequest.fbData.email || "-" + loginRequest.id + "@facebook.com";
+                  var email = fbUserInfo.email || "-" + fbUserInfo.id + "@facebook.com";
                   var serviceData = {
-                    id: loginRequest.fbData.id,
-                    accessToken: loginRequest.accessToken,
+                    id: fbUserInfo.id,
+                    accessToken: request.accessToken,
                     email: email
                   };
                   var options = {
                     profile: {
-                      name: loginRequest.fbData.name
+                      name: fbUserInfo.name
                     }
                   };
                   var user = Accounts.updateOrCreateUserFromExternalService ('facebook', serviceData, options);
@@ -83,6 +92,8 @@ Meteor.startup (
 
                   //send loggedin user's user id
                   fut.return ({userId: user.userId});
+
+
                 } else {
 
                   fut.return (null);
