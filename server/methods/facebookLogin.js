@@ -66,7 +66,7 @@ Meteor.startup (
                  "scopes":["public_profile"]}}
                  */
 
-                if (response.data.is_valid === true) {
+                if (response && response.data && response.data.is_valid === true) {
                   var fbUserInfo = Meteor.call('/facebook/api','/me?fields=id,name,email', request.accessToken);
 
                   /*
