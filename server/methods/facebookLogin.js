@@ -96,7 +96,7 @@ Meteor.startup (
 
                 } else {
 
-                  fut.return (null);
+                  fut.return ();
 
                 }
 

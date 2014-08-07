@@ -3,7 +3,7 @@
   "description": "A collection of Facebook functions exposed as Meteor methods.",
   "homepage": "https://github.com/premosystems/meteor-facebook-server-methods",
   "author": "Vincil Bishop <vincil.bishop@vbishop.com> (https://github.com/premosystems)",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "git": "https://github.com/premosystems/meteor-facebook-server-methods",
   "packages": {
     "facebook-node-sdk": "0.1.0"
