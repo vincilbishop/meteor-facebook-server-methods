@@ -23,7 +23,7 @@ Meteor.methods ({
     FB.api(requestUrl, Meteor.bindEnvironment (
       function (err, response) {
 
-        console.log(requestUrl + ' response: ' + JSON.stringify(response));
+        //console.log(requestUrl + ' response: ' + JSON.stringify(response));
 
         fut.return(response);
 
