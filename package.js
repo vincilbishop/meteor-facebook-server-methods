@@ -14,7 +14,7 @@ Package.onUse(function(api) {
   api.use('accounts-facebook', ['server']);
   api.use("timbroddin:facebook-node-sdk@0.1.0", ['server']);
   
-  api.addFiles('meteor-facebook-server-methods.js');
+  api.addFiles('facebook-server-methods.js');
   
   api.add_files('facebook-server-methods.js', ['server']);
   api.add_files('server/methods/facebookApi.js', ['server']);
