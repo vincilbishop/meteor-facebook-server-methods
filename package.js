@@ -14,7 +14,7 @@ Package.onUse(function(api) {
   api.use('accounts-facebook', ['server']);
   api.use("timbroddin:facebook-node-sdk@0.1.0", ['server']);
   
-  api.addFiles('facebook-server-methods.js');
+  api.addFiles('premosystems:facebookservermethods.js');
   
   api.add_files('facebook-server-methods.js', ['server']);
   api.add_files('server/methods/facebookApi.js', ['server']);
@@ -24,10 +24,11 @@ Package.onUse(function(api) {
   api.add_files('server/methods/testMethod.js', ['server']);
   
   api.export('FacebookServerMethods');
+  
 });
 
 Package.onTest(function(api) {
   api.use('tinytest');
-  api.use('meteor-facebook-server-methods');
-  api.addFiles('facebook-server-methods-tests.js');
+  api.use('premosystems:facebookservermethods');
+  api.addFiles('premosystems:facebookservermethods-tests.js');
 });
