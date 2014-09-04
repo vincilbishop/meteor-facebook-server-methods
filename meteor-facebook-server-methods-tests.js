@@ -1,12 +1,6 @@
-/*
- * Test this package by running this command from you app
- * folder:
- * 
- * > meteor test-packages facebook-server-methods
- *
- */
-
-Tinytest.add('facebook-server-methods - main test', function (test) {
+// Write your tests here!
+// Here is an example.
+Tinytest.add('example', function (test) {
   if (Meteor.isServer){
 
     // This test will fail without a valid app configuration...
