@@ -1,6 +1,6 @@
 Package.describe({
   summary: "A collection of Facebook functions exposed as Meteor methods.",
-  version: "1.0.0",
+  version: "1.0.1",
   git: "https://github.com/premosystems/meteor-facebook-server-methods"
 });
 

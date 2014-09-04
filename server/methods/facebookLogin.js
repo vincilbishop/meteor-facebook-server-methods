@@ -52,7 +52,14 @@ Meteor.startup (
           var url = '/debug_token?input_token=' + request.accessToken + '&access_token=' + appAccessToken;
           facebook.api (url, Meteor.bindEnvironment (
               function (err, response) {
-                console.log (JSON.stringify (response));
+              
+              	if (err)
+              	{ console.log ('facebook /debug_token error: ' + JSON.stringify (err));}
+              	else 
+              	{ console.log ('facebook /debug_token response: ' + JSON.stringify (response));}
+              
+               
+                
 
                 /*
                  {"data":
