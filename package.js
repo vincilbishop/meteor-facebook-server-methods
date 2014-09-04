@@ -16,7 +16,6 @@ Package.onUse(function(api) {
   
   api.addFiles('premosystems:facebookservermethods.js');
   
-  api.add_files('facebook-server-methods.js', ['server']);
   api.add_files('server/methods/facebookApi.js', ['server']);
   api.add_files('server/methods/facebookLogin.js', ['server']);
   api.add_files('server/methods/facebook_getUserInfo.js', ['server']);
