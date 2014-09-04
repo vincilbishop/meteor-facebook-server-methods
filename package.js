@@ -29,5 +29,5 @@ Package.onUse(function(api) {
 Package.onTest(function(api) {
   api.use('tinytest');
   api.use('meteor-facebook-server-methods');
-  api.addFiles('meteor-facebook-server-methods-tests.js');
+  api.addFiles('facebook-server-methods-tests.js');
 });
