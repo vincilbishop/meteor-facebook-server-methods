@@ -1,6 +1,6 @@
 Package.describe({
   summary: "A collection of Facebook functions exposed as Meteor methods.",
-  version: "1.0.1",
+  version: "1.0.2",
   git: "https://github.com/premosystems/meteor-facebook-server-methods"
 });
 
@@ -12,6 +12,7 @@ Package.onUse(function(api) {
   api.versionsFrom('METEOR@0.9.0.1');
   
   api.use('accounts-facebook', ['server']);
+  api.use('meteorhacks:npm@1.1.3', ['server'])
   api.use("timbroddin:facebook-node-sdk@0.1.0", ['server']);
   
   api.addFiles('premosystems:facebookservermethods.js');
